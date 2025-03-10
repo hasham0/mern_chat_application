@@ -40,11 +40,11 @@ router
 router
     .route("/update-profile")
     .put(
-        [authMiddleware],
         [
+            authMiddleware,
             body("profilePicture")
                 .isString()
-                .withMessage("Invalid profilePicture"),
+                .withMessage("Invalid profile Picture"),
         ],
         updateProfile
     );

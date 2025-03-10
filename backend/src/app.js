@@ -10,6 +10,7 @@ import cookieParser from "cookie-parser";
 
 // import api routes
 import authRoutes from "./routes/auth.route.js";
+import messageRoutes from "./routes/message.route.js";
 
 // import global level error handle middlewares
 import errorMiddleware from "./middlewares/error.middleware.js";
@@ -31,6 +32,7 @@ app.use(
 
 // set routes
 app.use("/api/auth", authRoutes);
+app.use("/api/message", messageRoutes);
 
 // set global level error handling middlwere
 app.use(errorMiddleware);
