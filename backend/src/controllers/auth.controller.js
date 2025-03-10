@@ -110,14 +110,14 @@ const updateProfile = asyncHandler(async (request, response) => {
     }
 
     // update user profile picture
-    const updateUser = await User.findByIdAndUpdate(
+    const updatedUser = await User.findByIdAndUpdate(
         userID,
         {
             profilePicture: cloudinaryImageResponse.secure_url,
         },
         { new: true }
     );
-    return response.status(200).json({ user: updateUser });
+    return response.status(200).json({ user: updatedUser });
 });
 
 const checkAuth = asyncHandler(async (request, response) => {

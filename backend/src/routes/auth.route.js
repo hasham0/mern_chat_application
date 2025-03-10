@@ -49,7 +49,7 @@ router
         updateProfile
     );
 
-router.route("/check").get([authMiddleware], checkAuth);
+router.route("/check-auth").get([authMiddleware], checkAuth);
 
 router.route("/logout").post([authMiddleware], logout);
 
