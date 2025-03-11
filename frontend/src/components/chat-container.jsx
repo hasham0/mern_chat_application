@@ -1,20 +1,33 @@
 import React, { useEffect, useRef } from "react";
 import useChatStore from "../store/useChatStore";
-import useAuthStore from "../store/useAuthStore";
+import { useAuthStore } from "../store/useAuthStore";
 import ChatHeader from "./chat-header";
 import MessageSkeleton from "./skeletons/message-skeleton";
 import MessageInput from "./message-input";
 import { formatMessageTime } from "../lib/utils";
 
 const ChatContainer = () => {
-  const { messages, getMessages, isMessagesLoading, selectedUser } =
-    useChatStore();
+  const {
+    messages,
+    getMessages,
+    isMessagesLoading,
+    selectedUser,
+    subscribeToMessages,
+    unSubscribeFromMessages,
+  } = useChatStore();
   const { authUser } = useAuthStore();
   const messageEndRef = useRef(null);
 
   useEffect(() => {
     getMessages(selectedUser?._id);
-  }, [getMessages, selectedUser?._id]);
+    subscribeToMessages();
+    return () => unSubscribeFromMessages();
+  }, [
+    getMessages,
+    selectedUser?._id,
+    subscribeToMessages,
+    unSubscribeFromMessages,
+  ]);
 
   useEffect(() => {
     if (messageEndRef.current && messages) {

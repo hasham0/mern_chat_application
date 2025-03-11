@@ -2,7 +2,7 @@ import http from "http";
 import "dotenv/config";
 import app from "./app.js";
 import connectToDB from "./configurations/db.config.js";
-// import { initilizeSocket } from "./socket.js";
+import { initilizeSocket } from "./lib/utils/socket/socket.js";
 
 const serverPort = process.env.PORT || 3000;
 
@@ -10,7 +10,7 @@ const serverPort = process.env.PORT || 3000;
 const server = http.createServer(app);
 
 // Initialize WebSocket
-// initilizeSocket(server);
+initilizeSocket(server);
 
 /* Database connection and server start */
 (async () => {

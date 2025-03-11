@@ -6,14 +6,14 @@ import LogIn from "./pages/LogIn";
 import Profile from "./pages/Profile";
 import Setting from "./pages/Setting";
 import NotFound from "./pages/NotFound";
-import useAuthStore from "./store/useAuthStore";
+import { useAuthStore } from "./store/useAuthStore";
 import { useEffect, useLayoutEffect } from "react";
 import { Loader } from "lucide-react";
 import UserProtectedRoute from "./protected/userProtectedRoute";
 import useThemeStore from "./store/useThemesStore";
 
 function App() {
-  const { checkAuth, authUser, isCheckingAuth } = useAuthStore();
+  const { checkAuth, authUser, isCheckingAuth, onlineUsers } = useAuthStore();
   const { initializeTheme } = useThemeStore();
 
   useEffect(() => {

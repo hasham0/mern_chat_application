@@ -5,6 +5,7 @@ import Message from "../models/message.model.js";
 import User from "../models/user.model.js";
 import { validationResult } from "express-validator";
 import cloudinary from "../lib/utils/cloudinary/cloudinary.js";
+import { getReceiverSocketId, io } from "../lib/utils/socket/socket.js";
 
 const usersForSideBar = asyncHandler(async (request, response) => {
     // Get all users except the logged in user
@@ -28,7 +29,7 @@ const userMessages = asyncHandler(async (request, response) => {
     const messages = await Message.find({
         $or: [
             { senderId: myId, reciverId: userToChatId },
-            { senderId: myId, reciverId: myId },
+            { senderId: userToChatId, reciverId: myId },
         ],
     });
     return response.status(200).json({
@@ -67,6 +68,10 @@ const sendMessage = asyncHandler(async (request, response) => {
     });
 
     // TODO: realtime functionaity usuig socket.io
+    const receiverSocketId = getReceiverSocketId(reciverId);
+    if (receiverSocketId) {
+        io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
     return response.status(201).json({
         messages: newMessage,
     });
