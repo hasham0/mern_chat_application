@@ -1,8 +1,10 @@
+import { createMessage } from "../lib/services/message.service.js";
 import { ValidationError } from "../lib/utils/customize-error-messages.js";
 import asyncHandler from "../middlewares/async-handler.middleware.js";
 import Message from "../models/message.model.js";
 import User from "../models/user.model.js";
 import { validationResult } from "express-validator";
+import cloudinary from "../lib/utils/cloudinary/cloudinary.js";
 
 const usersForSideBar = asyncHandler(async (request, response) => {
     // Get all users except the logged in user
@@ -47,12 +49,15 @@ const sendMessage = asyncHandler(async (request, response) => {
     // upload image to cloudinary
     let imageUrl = "";
     if (image) {
-        const cloudinaryResponse = await cloudinary.uploader.upload(image, {
-            upload_preset: "chat_application",
-        });
-        imageUrl = cloudinaryResponse.secure_url;
+        try {
+            const cloudinaryResponse = await cloudinary.uploader.upload(image, {
+                folder: "chat_application",
+            });
+            imageUrl = cloudinaryResponse.secure_url;
+        } catch (error) {
+            throw new Error("Image upload failed");
+        }
     }
-
     // create message
     const newMessage = await createMessage({
         senderId,
@@ -63,7 +68,7 @@ const sendMessage = asyncHandler(async (request, response) => {
 
     // TODO: realtime functionaity usuig socket.io
     return response.status(201).json({
-        message: newMessage,
+        messages: newMessage,
     });
 });
 

@@ -4,7 +4,7 @@ const createMessage = async ({ senderId, reciverId, text, imageUrl }) => {
     return await Message.create({
         senderId,
         reciverId,
-        text,
+        text: text || "",
         image: imageUrl,
     });
 };
